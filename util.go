@@ -1,4 +1,4 @@
-package main
+package aoc2020
 
 import (
 	"bufio"
@@ -6,12 +6,6 @@ import (
 	"os"
 	"strconv"
 )
-
-func AssertCorrect(actual, expected interface{}) {
-	if actual != expected {
-		panic(fmt.Errorf("incorrect: expected %v but got %v", expected, actual))
-	}
-}
 
 func ReadLines(path string) []string {
 	file, err := os.Open(path)
@@ -49,4 +43,35 @@ func MapMult(nums []int) int {
 		product *= num
 	}
 	return product
+}
+
+func FindNumsThatSum(target, count int, nums []int) []int {
+	// Find pair that equals target value.
+	if count == 2 {
+		seen := map[int]bool{}
+		for _, num := range nums {
+			missing := target - num
+			if seen[missing] {
+				return []int{missing, num}
+			}
+			seen[num] = true
+		}
+		return []int{}
+	}
+
+	for i, num := range nums {
+		// Create slice with current num missing.
+		remaining := make([]int, len(nums))
+		copy(remaining, nums)
+		remaining = append(remaining[:i], remaining[i+1:]...)
+
+		// Look in remaining for nums that would equal remaining.
+		missing := target - num
+		result := FindNumsThatSum(missing, count-1, remaining)
+		if len(result) > 0 {
+			return append(result, num)
+		}
+	}
+
+	return []int{}
 }
