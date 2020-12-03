@@ -25,14 +25,18 @@ func ReadLines(path string) []string {
 	return lines
 }
 
+func ParseInt(str string) int {
+	num, err := strconv.Atoi(str)
+	if err != nil {
+		panic(fmt.Errorf("convert int: %v", err))
+	}
+	return num
+}
+
 func MapInt(strs []string) []int {
 	var nums []int
 	for _, str := range strs {
-		num, err := strconv.Atoi(str)
-		if err != nil {
-			panic(fmt.Errorf("convert int: %v", err))
-		}
-		nums = append(nums, num)
+		nums = append(nums, ParseInt(str))
 	}
 	return nums
 }
@@ -65,7 +69,7 @@ func FindNumsThatSum(target, count int, nums []int) []int {
 		copy(remaining, nums)
 		remaining = append(remaining[:i], remaining[i+1:]...)
 
-		// Look in remaining for nums that would equal remaining.
+		// Look in remaining for nums that would equal missing.
 		missing := target - num
 		result := FindNumsThatSum(missing, count-1, remaining)
 		if len(result) > 0 {
