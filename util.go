@@ -33,6 +33,14 @@ func ParseInt(str string) int {
 	return num
 }
 
+func ParseBinary(str string) int {
+	num, err := strconv.ParseInt(str, 2, 64)
+	if err != nil {
+		panic(fmt.Errorf("parse binary string: %v", err))
+	}
+	return int(num)
+}
+
 func MapInt(strs []string) []int {
 	var nums []int
 	for _, str := range strs {

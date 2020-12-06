@@ -21,5 +21,8 @@ func Test(t *testing.T) {
 	AssertCorrect(t, Day3Part2(), 3424528800)
 
 	AssertCorrect(t, Day4Part1(), 213)
-	AssertCorrect(t, Day4Part2(), 0)
+	AssertCorrect(t, Day4Part2(), 147)
+
+	AssertCorrect(t, Day5Part1(), 801)
+	AssertCorrect(t, Day5Part2(), -1)
 }
