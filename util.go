@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func ReadLines(path string) []string {
@@ -86,4 +87,19 @@ func FindNumsThatSum(target, count int, nums []int) []int {
 	}
 
 	return []int{}
+}
+
+func SplitGroups(lines []string) [][]string {
+	groups := [][]string{}
+	currentGroup := []string{}
+	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			groups = append(groups, currentGroup)
+			currentGroup = []string{}
+			continue
+		}
+		currentGroup = append(currentGroup, line)
+	}
+	groups = append(groups, currentGroup)
+	return groups
 }

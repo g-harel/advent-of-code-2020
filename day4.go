@@ -72,25 +72,17 @@ func day4GenCheckRegex(pattern string) day4Checker {
 }
 
 func day4ExtractPassports(lines []string) []map[string]string {
-	passports := []string{}
-	currentPassport := ""
-	for _, line := range lines {
-		if strings.TrimSpace(line) == "" {
-			passports = append(passports, currentPassport)
-			currentPassport = ""
-			continue
-		}
-		currentPassport += " " + line
-	}
-	passports = append(passports, currentPassport)
+	passports := SplitGroups(lines)
 
 	parsedPassports := []map[string]string{}
 	for _, passport := range passports {
-		parts := strings.Split(strings.TrimSpace(passport), " ")
 		parsedPassport := map[string]string{}
-		for _, part := range parts {
-			entries := strings.Split(part, ":")
-			parsedPassport[entries[0]] = entries[1]
+		for _, passportLine := range passport {
+			parts := strings.Split(strings.TrimSpace(passportLine), " ")
+			for _, part := range parts {
+				entries := strings.Split(part, ":")
+				parsedPassport[entries[0]] = entries[1]
+			}
 		}
 		parsedPassports = append(parsedPassports, parsedPassport)
 	}
