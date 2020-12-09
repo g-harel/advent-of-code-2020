@@ -18,7 +18,11 @@ func ReadLines(path string) []string {
 	var lines []string
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		text := scanner.Text()
+		if text == "//ENDTEST" {
+			break
+		}
+		lines = append(lines, text)
 	}
 	if scanner.Err() != nil {
 		panic(fmt.Errorf("scan file: %v", err))
