@@ -38,6 +38,16 @@ func ParseInt(str string) int {
 	return num
 }
 
+func ParseSignedInt(str string) int {
+	if strings.HasPrefix(str, "+") {
+		return ParseInt(str[1:])
+	} else if strings.HasPrefix(str, "-") {
+		return -ParseInt(str[1:])
+	} else {
+		return ParseInt(str)
+	}
+}
+
 func ParseBinary(str string) int {
 	num, err := strconv.ParseInt(str, 2, 64)
 	if err != nil {
