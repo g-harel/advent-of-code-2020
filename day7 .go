@@ -13,18 +13,17 @@ type day7BagDefinition struct {
 func Day7Part1() int {
 	bags := day7ParseBags(ReadLines("day7.input.txt"))
 
-	// Map of content->parent(s)
-	invertedParentMap := map[string][]string{}
+	childToParentsMap := map[string][]string{}
 	for _, parent := range bags {
 		for _, child := range parent.childNames {
-			invertedParentMap[child] = append(invertedParentMap[child], parent.name)
+			childToParentsMap[child] = append(childToParentsMap[child], parent.name)
 		}
 	}
 
 	canBeParent := map[string]bool{}
 	var collectPotentialParents func(string)
 	collectPotentialParents = func(child string) {
-		for _, parent := range invertedParentMap[child] {
+		for _, parent := range childToParentsMap[child] {
 			canBeParent[parent] = true
 			collectPotentialParents(parent)
 		}
@@ -35,7 +34,25 @@ func Day7Part1() int {
 }
 
 func Day7Part2() int {
-	return -1
+	bags := day7ParseBags(ReadLines("day7.input.txt"))
+
+	parentToChildNameMap := map[string][]string{}
+	parentToChildCountMap := map[string][]int{}
+	for _, parent := range bags {
+		parentToChildNameMap[parent.name] = parent.childNames
+		parentToChildCountMap[parent.name] = parent.childCounts
+	}
+
+	var countChildren func(string) int
+	countChildren = func(parent string) int {
+		total := 1
+		for i, child := range parentToChildNameMap[parent] {
+			total += countChildren(child) * parentToChildCountMap[parent][i]
+		}
+		return total
+	}
+
+	return countChildren("shiny gold") - 1
 }
 
 func day7ParseBags(lines []string) []day7BagDefinition {
