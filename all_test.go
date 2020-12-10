@@ -33,5 +33,5 @@ func Test(t *testing.T) {
 	AssertCorrect(t, Day7Part2(), 41559)
 
 	AssertCorrect(t, Day8Part1(), 1801)
-	AssertCorrect(t, Day8Part2(), 0)
+	AssertCorrect(t, Day8Part2(), 2060)
 }
