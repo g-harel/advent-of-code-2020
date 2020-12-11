@@ -11,30 +11,30 @@ func AssertCorrect(t *testing.T, actual, expected interface{}) {
 }
 
 func Test(t *testing.T) {
-	AssertCorrect(t, Day1Part1(), 712075)
-	AssertCorrect(t, Day1Part2(), 145245270)
+	AssertCorrect(t, Day01Part1(), 712075)
+	AssertCorrect(t, Day01Part2(), 145245270)
 
-	AssertCorrect(t, Day2Part1(), 422)
-	AssertCorrect(t, Day2Part2(), 451)
+	AssertCorrect(t, Day02Part1(), 422)
+	AssertCorrect(t, Day02Part2(), 451)
 
-	AssertCorrect(t, Day3Part1(), 145)
-	AssertCorrect(t, Day3Part2(), 3424528800)
+	AssertCorrect(t, Day03Part1(), 145)
+	AssertCorrect(t, Day03Part2(), 3424528800)
 
-	AssertCorrect(t, Day4Part1(), 213)
-	AssertCorrect(t, Day4Part2(), 147)
+	AssertCorrect(t, Day04Part1(), 213)
+	AssertCorrect(t, Day04Part2(), 147)
 
-	AssertCorrect(t, Day5Part1(), 801)
-	AssertCorrect(t, Day5Part2(), 597)
+	AssertCorrect(t, Day05Part1(), 801)
+	AssertCorrect(t, Day05Part2(), 597)
 
-	AssertCorrect(t, Day6Part1(), 6782)
-	AssertCorrect(t, Day6Part2(), 3596)
+	AssertCorrect(t, Day06Part1(), 6782)
+	AssertCorrect(t, Day06Part2(), 3596)
 
-	AssertCorrect(t, Day7Part1(), 151)
-	AssertCorrect(t, Day7Part2(), 41559)
+	AssertCorrect(t, Day07Part1(), 151)
+	AssertCorrect(t, Day07Part2(), 41559)
 
-	AssertCorrect(t, Day8Part1(), 1801)
-	AssertCorrect(t, Day8Part2(), 2060)
+	AssertCorrect(t, Day08Part1(), 1801)
+	AssertCorrect(t, Day08Part2(), 2060)
 
-	AssertCorrect(t, Day9Part1(), 1)
-	AssertCorrect(t, Day9Part2(), 1)
+	AssertCorrect(t, Day09Part1(), 1212510616)
+	AssertCorrect(t, Day09Part2(), -1)
 }

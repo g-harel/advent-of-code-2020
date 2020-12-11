@@ -2,25 +2,25 @@ package aoc2020
 
 import "strings"
 
-func Day8Part1() int {
-	_, acc := day8Run(ReadLines("day8.input.txt"))
+func Day08Part1() int {
+	_, acc := day08Run(ReadLines("day08.input.txt"))
 	return acc
 }
 
-func Day8Part2() int {
-	lines := ReadLines("day8.input.txt")
+func Day08Part2() int {
+	lines := ReadLines("day08.input.txt")
 
 	for i, line := range lines {
 		if strings.Contains(line, "nop") {
 			lines[i] = strings.ReplaceAll(line, "nop", "jmp")
-			loop, acc := day8Run(lines)
+			loop, acc := day08Run(lines)
 			if !loop {
 				return acc
 			}
 		}
 		if strings.Contains(line, "jmp") {
 			lines[i] = strings.ReplaceAll(line, "jmp", "nop")
-			loop, acc := day8Run(lines)
+			loop, acc := day08Run(lines)
 			if !loop {
 				return acc
 			}
@@ -31,7 +31,7 @@ func Day8Part2() int {
 	return -1
 }
 
-func day8ParseInstruction(str string) (jmp bool, arg int) {
+func day08ParseInstruction(str string) (jmp bool, arg int) {
 	parts := strings.Split(str, " ")
 	operation := parts[0]
 	argument := ParseSignedInt(parts[1])
@@ -42,7 +42,7 @@ func day8ParseInstruction(str string) (jmp bool, arg int) {
 	return operation == "jmp", argument
 }
 
-func day8Run(instructions []string) (loop bool, acc int) {
+func day08Run(instructions []string) (loop bool, acc int) {
 	seenInstructions := map[int]bool{}
 	accumulator := 0
 	currentInstruction := 0
@@ -55,7 +55,7 @@ func day8Run(instructions []string) (loop bool, acc int) {
 		}
 		seenInstructions[currentInstruction] = true
 
-		jmp, arg := day8ParseInstruction(instructions[currentInstruction])
+		jmp, arg := day08ParseInstruction(instructions[currentInstruction])
 		if jmp {
 			currentInstruction += arg
 			continue

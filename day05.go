@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-func Day5Part1() int {
+func Day05Part1() int {
 	max := 0
-	for _, id := range day5DecodeAll(ReadLines("day5.input.txt")) {
+	for _, id := range day05DecodeAll(ReadLines("day05.input.txt")) {
 		if id > max {
 			max = id
 		}
@@ -15,8 +15,8 @@ func Day5Part1() int {
 	return max
 }
 
-func Day5Part2() int {
-	ids := day5DecodeAll(ReadLines("day5.input.txt"))
+func Day05Part2() int {
+	ids := day05DecodeAll(ReadLines("day05.input.txt"))
 	sort.Ints(ids)
 
 	offset := ids[0]
@@ -28,16 +28,16 @@ func Day5Part2() int {
 	return 0
 }
 
-func day5DecodeAll(lines []string) []int {
+func day05DecodeAll(lines []string) []int {
 	ids := []int{}
 	for _, line := range lines {
-		row, col := day5Decode(line)
+		row, col := day05Decode(line)
 		ids = append(ids, row*8+col)
 	}
 	return ids
 }
 
-func day5Decode(seat string) (int, int) {
+func day05Decode(seat string) (int, int) {
 	row := ParseBinary(strings.ReplaceAll(strings.ReplaceAll(seat[:7], "B", "1"), "F", "0"))
 	column := ParseBinary(strings.ReplaceAll(strings.ReplaceAll(seat[7:], "R", "1"), "L", "0"))
 	return row, column

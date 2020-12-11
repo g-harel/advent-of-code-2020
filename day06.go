@@ -2,8 +2,8 @@ package aoc2020
 
 import "strings"
 
-func Day6Part1() int {
-	groups := SplitGroups(ReadLines("day6.input.txt"))
+func Day06Part1() int {
+	groups := SplitGroups(ReadLines("day06.input.txt"))
 
 	total := 0
 	for _, group := range groups {
@@ -18,8 +18,8 @@ func Day6Part1() int {
 	return total
 }
 
-func Day6Part2() int {
-	groups := SplitGroups(ReadLines("day6.input.txt"))
+func Day06Part2() int {
+	groups := SplitGroups(ReadLines("day06.input.txt"))
 
 	total := 0
 	for _, group := range groups {

@@ -1,7 +1,7 @@
 package aoc2020
 
-func Day9Part1() int {
-	nums := MapInt(ReadLines("day9.input.txt"))
+func Day09Part1() int {
+	nums := MapInt(ReadLines("day09.input.txt"))
 
 	buffer := 25
 	for i := buffer; i <= len(nums); i++ {
@@ -28,6 +28,6 @@ func Day9Part1() int {
 	return -1
 }
 
-func Day9Part2() int {
+func Day09Part2() int {
 	return -1
 }

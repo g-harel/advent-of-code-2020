@@ -4,14 +4,14 @@ import (
 	"strings"
 )
 
-type day7BagDefinition struct {
+type day07BagDefinition struct {
 	name        string
 	childNames  []string
 	childCounts []int
 }
 
-func Day7Part1() int {
-	bags := day7ParseBags(ReadLines("day7.input.txt"))
+func Day07Part1() int {
+	bags := day07ParseBags(ReadLines("day07.input.txt"))
 
 	childToParentsMap := map[string][]string{}
 	for _, parent := range bags {
@@ -33,8 +33,8 @@ func Day7Part1() int {
 	return len(canBeParent)
 }
 
-func Day7Part2() int {
-	bags := day7ParseBags(ReadLines("day7.input.txt"))
+func Day07Part2() int {
+	bags := day07ParseBags(ReadLines("day07.input.txt"))
 
 	parentToChildNameMap := map[string][]string{}
 	parentToChildCountMap := map[string][]int{}
@@ -55,8 +55,8 @@ func Day7Part2() int {
 	return countChildren("shiny gold") - 1
 }
 
-func day7ParseBags(lines []string) []day7BagDefinition {
-	bags := []day7BagDefinition{}
+func day07ParseBags(lines []string) []day07BagDefinition {
+	bags := []day07BagDefinition{}
 	for _, line := range lines {
 		line = strings.ReplaceAll(line, " bags contain ", ":")
 		line = strings.ReplaceAll(line, " bags.", "")
@@ -66,7 +66,7 @@ func day7ParseBags(lines []string) []day7BagDefinition {
 		line = strings.ReplaceAll(line, ":no other", "")
 
 		parts := strings.Split(line, ":")
-		bag := day7BagDefinition{
+		bag := day07BagDefinition{
 			name: parts[0],
 		}
 		for _, child := range parts[1:] {
