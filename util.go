@@ -3,6 +3,7 @@ package aoc2020
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -116,4 +117,8 @@ func SplitGroups(lines []string) [][]string {
 	}
 	groups = append(groups, currentGroup)
 	return groups
+}
+
+func Rad(deg int) float64 {
+	return float64(deg) * (math.Pi / 180.0)
 }
