@@ -1,4 +1,4 @@
-package days
+package solution
 
 import (
 	"strings"
@@ -6,15 +6,15 @@ import (
 	"lib"
 )
 
-func Day02Part1() int {
-	return day02ApplyPolicy(lib.ReadLines("day02.input.txt"), day02RentalPolicy)
+func Part1() int {
+	return applyPolicy(lib.ReadLines("input.txt"), rentalPolicy)
 }
 
-func Day02Part2() int {
-	return day02ApplyPolicy(lib.ReadLines("day02.input.txt"), day02TobogganPolicy)
+func Part2() int {
+	return applyPolicy(lib.ReadLines("input.txt"), tobogganPolicy)
 }
 
-func day02ApplyPolicy(lines []string, policy func(a, b int, letter, password string) bool) int {
+func applyPolicy(lines []string, policy func(a, b int, letter, password string) bool) int {
 	count := 0
 	for _, line := range lines {
 		spaceSplit := strings.Split(line, " ")
@@ -32,7 +32,7 @@ func day02ApplyPolicy(lines []string, policy func(a, b int, letter, password str
 	return count
 }
 
-func day02RentalPolicy(a, b int, letter, password string) bool {
+func rentalPolicy(a, b int, letter, password string) bool {
 	count := 0
 	for _, char := range password {
 		if char == []rune(letter)[0] {
@@ -42,7 +42,7 @@ func day02RentalPolicy(a, b int, letter, password string) bool {
 	return count >= a && count <= b
 }
 
-func day02TobogganPolicy(a, b int, letter, password string) bool {
+func tobogganPolicy(a, b int, letter, password string) bool {
 	letterByte := []byte(letter)[0]
 	return (password[a-1] == letterByte) != (password[b-1] == letterByte)
 }

@@ -7,7 +7,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"testing"
 )
+
+func AssertCorrect(t *testing.T, actual, expected interface{}) {
+	if actual != expected {
+		t.Fatalf("incorrect: expected %v but got %v", expected, actual)
+	}
+}
 
 func ReadLines(path string) []string {
 	file, err := os.Open(path)
