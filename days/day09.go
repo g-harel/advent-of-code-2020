@@ -3,7 +3,7 @@ package days
 import (
 	"sort"
 
-	"lib"
+	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 func Day09Part1() int {

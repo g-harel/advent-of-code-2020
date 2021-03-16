@@ -1,6 +1,6 @@
 package solution
 
-import "lib"
+import "github.com/g-harel/advent-of-code-2020/lib"
 
 func Part1() int {
 	return calcCollisions(lib.ReadLines("input.txt"), 3, 1)

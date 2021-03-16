@@ -3,7 +3,7 @@ package days
 import (
 	"strings"
 
-	"lib"
+	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 type day07BagDefinition struct {

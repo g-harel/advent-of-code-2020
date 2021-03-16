@@ -1,6 +1,6 @@
 package days
 
-import "lib"
+import "github.com/g-harel/advent-of-code-2020/lib"
 
 func Day11Part1() int {
 	lines := lib.ReadLines("day11.input.txt")

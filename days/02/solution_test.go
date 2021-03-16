@@ -1,10 +1,10 @@
 package solution_test
 
 import (
-	"lib"
 	"testing"
 
 	solution "github.com/g-harel/advent-of-code-2020/days/02"
+	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 func Test(t *testing.T) {

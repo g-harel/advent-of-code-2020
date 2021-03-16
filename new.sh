@@ -11,7 +11,7 @@ EOF
 cat <<EOF >> "days/$1/solution.go"
 package solution
 
-import "lib"
+import "github.com/g-harel/advent-of-code-2020/lib"
 
 func Part1() int {
 	lib.ReadLines("input.txt")
@@ -28,10 +28,10 @@ cat <<EOF >> "days/$1/solution_test.go"
 package solution_test
 
 import (
-	"lib"
 	"testing"
 
 	solution "github.com/g-harel/advent-of-code-2020/days/$1"
+	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 func Test(t *testing.T) {

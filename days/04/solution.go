@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"lib"
+	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 type Checker func(string) bool
