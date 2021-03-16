@@ -1,14 +1,16 @@
-package aoc2020
+package days
 
 import (
 	"regexp"
 	"strings"
+
+	"lib"
 )
 
 type day04Checker func(string) bool
 
 func Day04Part1() int {
-	return day04CountCheckers(ReadLines("day04.input.txt"), map[string][]day04Checker{
+	return day04CountCheckers(lib.ReadLines("day04.input.txt"), map[string][]day04Checker{
 		"byr": {day04CheckIsPresent},
 		"iyr": {day04CheckIsPresent},
 		"eyr": {day04CheckIsPresent},
@@ -20,7 +22,7 @@ func Day04Part1() int {
 }
 
 func Day04Part2() int {
-	return day04CountCheckers(ReadLines("day04.input.txt"), map[string][]day04Checker{
+	return day04CountCheckers(lib.ReadLines("day04.input.txt"), map[string][]day04Checker{
 		"byr": {day04GenCheckRegex(`^\d{4}$`), day04GenCheckRange(1920, 2002)},
 		"iyr": {day04GenCheckRegex(`^\d{4}$`), day04GenCheckRange(2010, 2020)},
 		"eyr": {day04GenCheckRegex(`^\d{4}$`), day04GenCheckRange(2020, 2030)},
@@ -47,11 +49,11 @@ func day04CheckIsPresent(val string) bool {
 
 func day04CheckHgt(val string) bool {
 	if strings.HasSuffix(val, "cm") {
-		num := ParseInt(strings.TrimSuffix(val, "cm"))
+		num := lib.ParseInt(strings.TrimSuffix(val, "cm"))
 		return num >= 150 && num <= 193
 	}
 	if strings.HasSuffix(val, "in") {
-		num := ParseInt(strings.TrimSuffix(val, "in"))
+		num := lib.ParseInt(strings.TrimSuffix(val, "in"))
 		return num >= 59 && num <= 76
 	}
 	return false
@@ -59,7 +61,7 @@ func day04CheckHgt(val string) bool {
 
 func day04GenCheckRange(min, max int) day04Checker {
 	return func(val string) bool {
-		num := ParseInt(val)
+		num := lib.ParseInt(val)
 		return num >= min && num <= max
 	}
 }
@@ -72,7 +74,7 @@ func day04GenCheckRegex(pattern string) day04Checker {
 }
 
 func day04ExtractPassports(lines []string) []map[string]string {
-	passports := SplitGroups(lines)
+	passports := lib.SplitGroups(lines)
 
 	parsedPassports := []map[string]string{}
 	for _, passport := range passports {

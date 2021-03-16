@@ -1,15 +1,19 @@
-package aoc2020
+package days
 
-import "math"
+import (
+	"math"
+
+	"lib"
+)
 
 func Day12Part1() int {
-	lines := ReadLines("day12.input.txt")
+	lines := lib.ReadLines("day12.input.txt")
 
 	x, y := 0, 0
 	direction := 0 // angle in degrees where zero is due east
 	for _, line := range lines {
 		action := line[0:1]
-		value := ParseInt(line[1:])
+		value := lib.ParseInt(line[1:])
 		switch action {
 		case "N":
 			y += value
@@ -24,8 +28,8 @@ func Day12Part1() int {
 		case "R":
 			direction -= value
 		case "F":
-			y += int(math.Sin(Rad(direction))) * value
-			x += int(math.Cos(Rad(direction))) * value
+			y += int(math.Sin(lib.Rad(direction))) * value
+			x += int(math.Cos(lib.Rad(direction))) * value
 		}
 	}
 

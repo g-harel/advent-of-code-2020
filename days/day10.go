@@ -1,11 +1,13 @@
-package aoc2020
+package days
 
 import (
 	"sort"
+
+	"lib"
 )
 
 func Day10Part1() int {
-	nums := MapInt(ReadLines("day10.input.txt"))
+	nums := lib.MapInt(lib.ReadLines("day10.input.txt"))
 	sort.Ints(nums)
 
 	numOneDiff := 0

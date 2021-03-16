@@ -1,7 +1,9 @@
-package aoc2020
+package days
 
 import (
 	"strings"
+
+	"lib"
 )
 
 type day07BagDefinition struct {
@@ -11,7 +13,7 @@ type day07BagDefinition struct {
 }
 
 func Day07Part1() int {
-	bags := day07ParseBags(ReadLines("day07.input.txt"))
+	bags := day07ParseBags(lib.ReadLines("day07.input.txt"))
 
 	childToParentsMap := map[string][]string{}
 	for _, parent := range bags {
@@ -34,7 +36,7 @@ func Day07Part1() int {
 }
 
 func Day07Part2() int {
-	bags := day07ParseBags(ReadLines("day07.input.txt"))
+	bags := day07ParseBags(lib.ReadLines("day07.input.txt"))
 
 	parentToChildNameMap := map[string][]string{}
 	parentToChildCountMap := map[string][]int{}
@@ -72,7 +74,7 @@ func day07ParseBags(lines []string) []day07BagDefinition {
 		for _, child := range parts[1:] {
 			childSplit := strings.SplitN(child, " ", 2)
 			bag.childNames = append(bag.childNames, childSplit[1])
-			bag.childCounts = append(bag.childCounts, ParseInt(childSplit[0]))
+			bag.childCounts = append(bag.childCounts, lib.ParseInt(childSplit[0]))
 		}
 		bags = append(bags, bag)
 	}

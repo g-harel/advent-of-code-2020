@@ -1,14 +1,18 @@
-package aoc2020
+package days
 
-import "strings"
+import (
+	"strings"
+
+	"lib"
+)
 
 func Day08Part1() int {
-	_, acc := day08Run(ReadLines("day08.input.txt"))
+	_, acc := day08Run(lib.ReadLines("day08.input.txt"))
 	return acc
 }
 
 func Day08Part2() int {
-	lines := ReadLines("day08.input.txt")
+	lines := lib.ReadLines("day08.input.txt")
 
 	for i, line := range lines {
 		if strings.Contains(line, "nop") {
@@ -34,7 +38,7 @@ func Day08Part2() int {
 func day08ParseInstruction(str string) (jmp bool, arg int) {
 	parts := strings.Split(str, " ")
 	operation := parts[0]
-	argument := ParseSignedInt(parts[1])
+	argument := lib.ParseSignedInt(parts[1])
 	if operation == "nop" {
 		operation = "jmp"
 		argument = 1

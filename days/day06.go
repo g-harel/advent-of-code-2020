@@ -1,9 +1,13 @@
-package aoc2020
+package days
 
-import "strings"
+import (
+	"strings"
+
+	"lib"
+)
 
 func Day06Part1() int {
-	groups := SplitGroups(ReadLines("day06.input.txt"))
+	groups := lib.SplitGroups(lib.ReadLines("day06.input.txt"))
 
 	total := 0
 	for _, group := range groups {
@@ -19,7 +23,7 @@ func Day06Part1() int {
 }
 
 func Day06Part2() int {
-	groups := SplitGroups(ReadLines("day06.input.txt"))
+	groups := lib.SplitGroups(lib.ReadLines("day06.input.txt"))
 
 	total := 0
 	for _, group := range groups {

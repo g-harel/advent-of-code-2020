@@ -1,11 +1,13 @@
-package aoc2020
+package days
+
+import "lib"
 
 func Day03Part1() int {
-	return day03CalcCollisions(ReadLines("day03.input.txt"), 3, 1)
+	return day03CalcCollisions(lib.ReadLines("day03.input.txt"), 3, 1)
 }
 
 func Day03Part2() int {
-	lines := ReadLines("day03.input.txt")
+	lines := lib.ReadLines("day03.input.txt")
 	return day03CalcCollisions(lines, 1, 1) *
 		day03CalcCollisions(lines, 3, 1) *
 		day03CalcCollisions(lines, 5, 1) *

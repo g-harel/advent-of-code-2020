@@ -7,7 +7,7 @@ cat <<EOF >> "day$1.input.txt"
 EOF
 
 cat <<EOF >> "day$1.go"
-package aoc2020
+package days
 
 func Day$1Part1() int {
 	return -1

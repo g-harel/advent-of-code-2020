@@ -1,7 +1,9 @@
-package aoc2020
+package days
+
+import "lib"
 
 func Day11Part1() int {
-	lines := ReadLines("day11.input.txt")
+	lines := lib.ReadLines("day11.input.txt")
 
 	prev := lines
 	for {
