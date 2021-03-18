@@ -7,7 +7,7 @@ import (
 )
 
 func Day10Part1() int {
-	nums := lib.MapInt(lib.ReadLines("day10.input.txt"))
+	nums := lib.ParseInts(lib.ReadLines("day10.input.txt"))
 	sort.Ints(nums)
 
 	numOneDiff := 0

@@ -7,12 +7,12 @@ import (
 )
 
 func Day09Part1() int {
-	nums := lib.MapInt(lib.ReadLines("day09.input.txt"))
+	nums := lib.ParseInts(lib.ReadLines("day09.input.txt"))
 	return nums[day09FindNotSumIndex(nums, 25)]
 }
 
 func Day09Part2() int {
-	nums := lib.MapInt(lib.ReadLines("day09.input.txt"))
+	nums := lib.ParseInts(lib.ReadLines("day09.input.txt"))
 	target := nums[day09FindNotSumIndex(nums, 25)]
 
 	matchingRange := []int{}
