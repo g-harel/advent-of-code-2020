@@ -1,4 +1,4 @@
-package days
+package solution
 
 import (
 	"sort"
@@ -6,8 +6,8 @@ import (
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
-func Day10Part1() int {
-	nums := lib.ParseInts(lib.ReadLines("day10.input.txt"))
+func Part1() int {
+	nums := lib.ParseInts(lib.ReadLines("input.txt"))
 	sort.Ints(nums)
 
 	numOneDiff := 0
@@ -26,6 +26,6 @@ func Day10Part1() int {
 	return numOneDiff * numThreeDiff
 }
 
-func Day10Part2() int {
+func Part2() int {
 	return -1
 }

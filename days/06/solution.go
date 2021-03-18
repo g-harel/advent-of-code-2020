@@ -1,4 +1,4 @@
-package days
+package solution
 
 import (
 	"strings"
@@ -6,8 +6,8 @@ import (
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
-func Day06Part1() int {
-	groups := lib.SplitGroups(lib.ReadLines("day06.input.txt"))
+func Part1() int {
+	groups := lib.SplitGroups(lib.ReadLines("input.txt"))
 
 	total := 0
 	for _, group := range groups {
@@ -22,8 +22,8 @@ func Day06Part1() int {
 	return total
 }
 
-func Day06Part2() int {
-	groups := lib.SplitGroups(lib.ReadLines("day06.input.txt"))
+func Part2() int {
+	groups := lib.SplitGroups(lib.ReadLines("input.txt"))
 
 	total := 0
 	for _, group := range groups {

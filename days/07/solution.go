@@ -1,4 +1,4 @@
-package days
+package solution
 
 import (
 	"strings"
@@ -6,14 +6,14 @@ import (
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
-type day07BagDefinition struct {
+type bagDefinition struct {
 	name        string
 	childNames  []string
 	childCounts []int
 }
 
-func Day07Part1() int {
-	bags := day07ParseBags(lib.ReadLines("day07.input.txt"))
+func Part1() int {
+	bags := parseBags(lib.ReadLines("input.txt"))
 
 	childToParentsMap := map[string][]string{}
 	for _, parent := range bags {
@@ -35,8 +35,8 @@ func Day07Part1() int {
 	return len(canBeParent)
 }
 
-func Day07Part2() int {
-	bags := day07ParseBags(lib.ReadLines("day07.input.txt"))
+func Part2() int {
+	bags := parseBags(lib.ReadLines("input.txt"))
 
 	parentToChildNameMap := map[string][]string{}
 	parentToChildCountMap := map[string][]int{}
@@ -57,8 +57,8 @@ func Day07Part2() int {
 	return countChildren("shiny gold") - 1
 }
 
-func day07ParseBags(lines []string) []day07BagDefinition {
-	bags := []day07BagDefinition{}
+func parseBags(lines []string) []bagDefinition {
+	bags := []bagDefinition{}
 	for _, line := range lines {
 		line = strings.ReplaceAll(line, " bags contain ", ":")
 		line = strings.ReplaceAll(line, " bags.", "")
@@ -68,7 +68,7 @@ func day07ParseBags(lines []string) []day07BagDefinition {
 		line = strings.ReplaceAll(line, ":no other", "")
 
 		parts := strings.Split(line, ":")
-		bag := day07BagDefinition{
+		bag := bagDefinition{
 			name: parts[0],
 		}
 		for _, child := range parts[1:] {

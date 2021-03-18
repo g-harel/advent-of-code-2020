@@ -1,4 +1,4 @@
-package days
+package solution
 
 import (
 	"math"
@@ -6,8 +6,8 @@ import (
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
-func Day12Part1() int {
-	lines := lib.ReadLines("day12.input.txt")
+func Part1() int {
+	lines := lib.ReadLines("input.txt")
 
 	x, y := 0, 0
 	direction := 0 // angle in degrees where zero is due east
@@ -36,6 +36,6 @@ func Day12Part1() int {
 	return int(math.Abs(float64(x)) + math.Abs(float64(y)))
 }
 
-func Day12Part2() int {
+func Part2() int {
 	return -1
 }

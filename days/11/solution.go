@@ -1,30 +1,30 @@
-package days
+package solution
 
 import "github.com/g-harel/advent-of-code-2020/lib"
 
-func Day11Part1() int {
-	lines := lib.ReadLines("day11.input.txt")
+func Part1() int {
+	lines := lib.ReadLines("input.txt")
 
 	prev := lines
 	for {
 		prev = lines
-		lines = day11RunRound(lines)
-		if day11BoardEqual(prev, lines) {
-			return day11CountOccupied(lines)
+		lines = runRound(lines)
+		if boardEqual(prev, lines) {
+			return countOccupied(lines)
 		}
 	}
 }
 
-func Day11Part2() int {
+func Part2() int {
 	return -1
 }
 
-func day11RunRound(lines []string) []string {
+func runRound(lines []string) []string {
 	updated := []string{}
 	for i := 0; i < len(lines); i++ {
 		line := ""
 		for j := 0; j < len(lines[i]); j++ {
-			neighbors := day11CountNeighbors(lines, j, i)
+			neighbors := countNeighbors(lines, j, i)
 			if lines[i][j] == "L"[0] && neighbors == 0 {
 				line += "#"
 			} else if lines[i][j] == "#"[0] && neighbors >= 4 {
@@ -38,7 +38,7 @@ func day11RunRound(lines []string) []string {
 	return updated
 }
 
-func day11CountNeighbors(lines []string, x, y int) int {
+func countNeighbors(lines []string, x, y int) int {
 	isOccupied := func(x, y int) int {
 		if y < 0 || x < 0 || y >= len(lines) || x >= len(lines[y]) {
 			return 0
@@ -53,7 +53,7 @@ func day11CountNeighbors(lines []string, x, y int) int {
 		isOccupied(x-1, y+1) + isOccupied(x, y+1) + isOccupied(x+1, y+1)
 }
 
-func day11BoardEqual(a, b []string) bool {
+func boardEqual(a, b []string) bool {
 	for i := 0; i < len(a); i++ {
 		for j := 0; j < len(a[i]); j++ {
 			if a[i][j] != b[i][j] {
@@ -64,7 +64,7 @@ func day11BoardEqual(a, b []string) bool {
 	return true
 }
 
-func day11CountOccupied(lines []string) int {
+func countOccupied(lines []string) int {
 	count := 0
 	for i := 0; i < len(lines); i++ {
 		for j := 0; j < len(lines[i]); j++ {

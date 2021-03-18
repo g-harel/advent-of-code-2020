@@ -1,4 +1,4 @@
-package days
+package solution
 
 import (
 	"sort"
@@ -7,9 +7,9 @@ import (
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
-func Day05Part1() int {
+func Part1() int {
 	max := 0
-	for _, id := range day05DecodeAll(lib.ReadLines("day05.input.txt")) {
+	for _, id := range decodeAll(lib.ReadLines("input.txt")) {
 		if id > max {
 			max = id
 		}
@@ -17,8 +17,8 @@ func Day05Part1() int {
 	return max
 }
 
-func Day05Part2() int {
-	ids := day05DecodeAll(lib.ReadLines("day05.input.txt"))
+func Part2() int {
+	ids := decodeAll(lib.ReadLines("input.txt"))
 	sort.Ints(ids)
 
 	offset := ids[0]
@@ -30,16 +30,16 @@ func Day05Part2() int {
 	return 0
 }
 
-func day05DecodeAll(lines []string) []int {
+func decodeAll(lines []string) []int {
 	ids := []int{}
 	for _, line := range lines {
-		row, col := day05Decode(line)
+		row, col := decode(line)
 		ids = append(ids, row*8+col)
 	}
 	return ids
 }
 
-func day05Decode(seat string) (int, int) {
+func decode(seat string) (int, int) {
 	row := lib.ParseBinary(strings.ReplaceAll(strings.ReplaceAll(seat[:7], "B", "1"), "F", "0"))
 	column := lib.ParseBinary(strings.ReplaceAll(strings.ReplaceAll(seat[7:], "R", "1"), "L", "0"))
 	return row, column
