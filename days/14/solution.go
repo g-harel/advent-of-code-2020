@@ -14,25 +14,22 @@ type writeOp struct {
 func Part1() int {
 	lines := lib.ReadLines("input.txt")
 
-	mask := strings.ReplaceAll(lines[0], "mask = ", "")
-	ops := []writeOp{}
-	for _, opLine := range lines[1:] {
-		s := strings.Split(opLine, " = ")
-		addr := strings.ReplaceAll(strings.ReplaceAll(s[0], "mem[", ""), "]", "")
-		ops = append(ops, writeOp{
-			address: lib.ParseInt(addr),
-			value:   lib.ParseInt(s[1]),
-		})
+	mem := map[int]int{}
+	mask := ""
+
+	for _, line := range lines {
+		if strings.HasPrefix(line, "mask = ") {
+			mask = strings.ReplaceAll(line, "mask = ", "")
+			continue
+		}
+
+		parts := strings.Split(line, " = ")
+		addr := strings.ReplaceAll(strings.ReplaceAll(parts[0], "mem[", ""), "]", "")
+		mem[lib.ParseInt(addr)] = applyMask(mask, lib.ParseInt(parts[1]))
 	}
 
-	mem := map[int]int{}
-	applyMaskedOps(mem, mask, ops)
-
 	sum := 0
-	for addr, val := range mem {
-		println(addr)
-		println(val)
-		println("===")
+	for _, val := range mem {
 		sum += val
 	}
 
@@ -44,10 +41,8 @@ func Part2() int {
 	return -1
 }
 
-func applyMaskedOps(mem map[int]int, mask string, writes []writeOp) {
+func applyMask(mask string, value int) int {
 	oneMask := lib.ParseBinary(strings.ReplaceAll(mask, "X", "0"))
 	zeroMask := lib.ParseBinary(strings.ReplaceAll(mask, "X", "1"))
-	for _, w := range writes {
-		mem[w.address] = (w.value | oneMask) & zeroMask
-	}
+	return (value | oneMask) & zeroMask
 }
