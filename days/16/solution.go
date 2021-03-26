@@ -1,7 +1,6 @@
 package solution
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
@@ -12,12 +11,8 @@ type validRange struct {
 	end   int
 }
 
-func Part1() int {
-	lines := lib.ReadLines("input.txt")
-
-	ranges := map[string][]validRange{}
-	yourTicket := []int{}
-	nearbyTickets := [][]int{}
+func parseInput(lines []string) (ranges map[string][]validRange, yourTicket []int, nearbyTickets [][]int) {
+	ranges = map[string][]validRange{}
 	section := 0
 	for _, line := range lines {
 		if line == "your ticket:" || line == "nearby tickets:" {
@@ -46,10 +41,34 @@ func Part1() int {
 		}
 		nearbyTickets = append(nearbyTickets, lib.ParseInts(strings.Split(line, ",")))
 	}
+	return ranges, yourTicket, nearbyTickets
+}
 
-	fmt.Println(ranges, yourTicket, nearbyTickets)
+func Part1() int {
+	ranges, _, nearbyTickets := parseInput(lib.ReadLines("input.txt"))
 
-	return 1
+	errors := 0
+	for _, nearbyTicket := range nearbyTickets {
+		for _, value := range nearbyTicket {
+			inRange := false
+			for _, validRanges := range ranges {
+				if inRange {
+					continue
+				}
+				for _, vr := range validRanges {
+					if value >= vr.start && value <= vr.end {
+						inRange = true
+						continue
+					}
+				}
+			}
+			if !inRange {
+				errors += value
+			}
+		}
+	}
+
+	return errors
 }
 
 func Part2() int {
