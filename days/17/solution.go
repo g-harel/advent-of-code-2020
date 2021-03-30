@@ -1,27 +1,49 @@
 package solution
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 type Coord struct {
-	x int
-	y int
-	z int
+	values []int
 }
 
-func NewCoord(str string) Coord {
-	parts := lib.ParseInts(strings.Split(str, ","))
-	return Coord{parts[0], parts[1], parts[2]}
+func NewCoord(c ...int) Coord {
+	return Coord{
+		values: c,
+	}
+}
+
+func ParseCoord(str string) Coord {
+	return Coord{values: lib.ParseInts(strings.Split(str, ","))}
 }
 
 // Produce string representaton of coordinates.
-// Will never produce same string from different coordinates.
+// Will never generate same string from different coordinates.
 func (c *Coord) String() string {
-	return fmt.Sprintf("%v,%v,%v", c.x, c.y, c.z)
+	strs := []string{}
+	for _, value := range c.values {
+		strs = append(strs, strconv.Itoa(value))
+	}
+	return strings.Join(strs, ",")
+}
+
+// List of neighbor coordinates (at most one away in any direction).
+// Also includes self coordinates.
+func (c *Coord) Neighbors() []Coord {
+	combinations := lib.Combinations(len(c.values), []int{-1, 0, 1})
+	neighbors := []Coord{}
+	for _, combination := range combinations {
+		neighbor := Coord{values: []int{}}
+		for i, offset := range combination {
+			neighbor.values = append(neighbor.values, c.values[i]+offset)
+		}
+		neighbors = append(neighbors, neighbor)
+	}
+	return neighbors
 }
 
 //
@@ -54,7 +76,7 @@ func (g *Grid) GetMarked(c Coord) bool {
 func (g *Grid) GetAllMarked() []Coord {
 	cs := []Coord{}
 	for v := range g.values {
-		cs = append(cs, NewCoord(v))
+		cs = append(cs, ParseCoord(v))
 	}
 	return cs
 }
@@ -67,21 +89,12 @@ func iterate(prev Grid) Grid {
 	candidates := []Coord{}
 	wasIterated := NewGrid()
 	for _, marked := range prev.GetAllMarked() {
-		for xOffset := -1; xOffset <= 1; xOffset++ {
-			for yOffset := -1; yOffset <= 1; yOffset++ {
-				for zOffset := -1; zOffset <= 1; zOffset++ {
-					neighbor := Coord{
-						x: marked.x + xOffset,
-						y: marked.y + yOffset,
-						z: marked.z + zOffset,
-					}
-					if wasIterated.GetMarked(neighbor) {
-						continue
-					}
-					wasIterated.SetMarked(neighbor)
-					candidates = append(candidates, neighbor)
-				}
+		for _, neighbor := range marked.Neighbors() {
+			if wasIterated.GetMarked(neighbor) {
+				continue
 			}
+			wasIterated.SetMarked(neighbor)
+			candidates = append(candidates, neighbor)
 		}
 	}
 
@@ -89,24 +102,13 @@ func iterate(prev Grid) Grid {
 	next := NewGrid()
 	for _, candidate := range candidates {
 		neighbors := 0
-		for xOffset := -1; xOffset <= 1; xOffset++ {
-			for yOffset := -1; yOffset <= 1; yOffset++ {
-				for zOffset := -1; zOffset <= 1; zOffset++ {
-					if xOffset == 0 && yOffset == 0 && zOffset == 0 {
-						continue
-					}
-					neighbor := Coord{
-						x: candidate.x + xOffset,
-						y: candidate.y + yOffset,
-						z: candidate.z + zOffset,
-					}
-					if prev.GetMarked(neighbor) {
-						neighbors++
-					}
-				}
+		for _, neighbor := range candidate.Neighbors() {
+			if prev.GetMarked(neighbor) {
+				neighbors++
 			}
 		}
 		if prev.GetMarked(candidate) {
+			neighbors--
 			if neighbors == 2 || neighbors == 3 {
 				next.SetMarked(candidate)
 			}
@@ -129,7 +131,7 @@ func Part1() int {
 	for i, line := range lines {
 		for j, char := range line {
 			if string(char) == "#" {
-				grid.SetMarked(Coord{j, i, 0})
+				grid.SetMarked(NewCoord(j, i, 0))
 			}
 		}
 	}
@@ -142,6 +144,20 @@ func Part1() int {
 }
 
 func Part2() int {
-	lib.ReadLines("input.txt")
-	return -1
+	lines := lib.ReadLines("input.txt")
+
+	grid := NewGrid()
+	for i, line := range lines {
+		for j, char := range line {
+			if string(char) == "#" {
+				grid.SetMarked(NewCoord(j, i, 0, 0))
+			}
+		}
+	}
+
+	for i := 0; i < 6; i++ {
+		grid = iterate(grid)
+	}
+
+	return grid.GetCount()
 }

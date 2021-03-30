@@ -9,5 +9,5 @@ import (
 
 func Test(t *testing.T) {
 	lib.AssertCorrect(t, solution.Part1(), 295)
-	lib.AssertCorrect(t, solution.Part2(), -1)
+	lib.AssertCorrect(t, solution.Part2(), 1972)
 }

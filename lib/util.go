@@ -62,3 +62,19 @@ func SplitGroups(lines []string) [][]string {
 	groups = append(groups, currentGroup)
 	return groups
 }
+
+func Combinations(positions int, options []int) [][]int {
+	combinations := [][]int{{}}
+	for i := 0; i < positions; i++ {
+		newCombinations := [][]int{}
+		for _, option := range options {
+			for _, prevCombination := range combinations {
+				newCombination := make([]int, len(prevCombination))
+				copy(newCombination, prevCombination)
+				newCombinations = append(newCombinations, append(newCombination, option))
+			}
+		}
+		combinations = newCombinations
+	}
+	return combinations
+}
