@@ -19,7 +19,7 @@ type Atom struct {
 	value      *int
 }
 
-func (a *Atom) Print() string {
+func (a Atom) Print() string {
 	if a.value != nil {
 		return strconv.Itoa(*a.value)
 	}
@@ -32,7 +32,7 @@ func (a *Atom) Print() string {
 		a.expression.right.Print())
 }
 
-func (a *Atom) Evaluate() int {
+func (a Atom) Evaluate() int {
 	if a.value != nil {
 		return *a.value
 	}
@@ -54,7 +54,7 @@ func (a *Atom) Evaluate() int {
 
 // Assumes expression is correct.
 func Parse(str string) Atom {
-	curr := Atom{}
+	current := Atom{}
 	for i := 0; i < len(str); i++ {
 		char := string(str[i])
 		switch char {
@@ -73,49 +73,41 @@ func Parse(str string) Atom {
 				}
 			}
 			subExpression := Parse(str[start+1 : i])
-			if curr.expression != nil {
-				curr.expression.right = subExpression
+			if current.expression != nil {
+				current.expression.right = subExpression
 			} else {
-				curr = Atom{
-					expression: &Expression{
-						operator: char,
-						left:     curr,
-					},
-				}
+				current = subExpression
 			}
 		case "+", "*":
-			curr = Atom{
+			current = Atom{
 				expression: &Expression{
 					operator: char,
-					left:     curr,
+					left:     current,
 				},
 			}
 		default:
 			value := lib.ParseInt(char)
-			if curr.expression != nil {
-				curr.expression.right = Atom{value: &value}
+			if current.expression != nil {
+				current.expression.right = Atom{value: &value}
 			} else {
-				curr.value = &value
+				current.value = &value
 			}
 		}
 	}
-	return curr
+	return current
 }
 
 //
 
 func Part1() int {
-	lib.ReadLines("input.txt")
+	lines := lib.ReadLines("input.txt")
 
-	var expr string
-	expr = "1+2*3"
-	expr = "1+(2*3)"
-	expr = "1+(1+2)*(2+3)"
-	// TODO fix when stars with parens
-	parsed := Parse(expr)
-	fmt.Println(expr, " // ", parsed.Print())
+	sum := 0
+	for _, line := range lines {
+		sum += Parse(line).Evaluate()
+	}
 
-	return parsed.Evaluate()
+	return sum
 }
 
 func Part2() int {
