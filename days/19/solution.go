@@ -45,6 +45,12 @@ func EitherConsumer(consumers ...Consumer) Consumer {
 	}
 }
 
+func DeferredConsumer(fn func() Consumer) Consumer {
+	return func(i int, str string) int {
+		return fn()(i, str)
+	}
+}
+
 func Part1() int {
 	groups := lib.SplitGroups(lib.ReadLines("input.txt"))
 
@@ -65,7 +71,13 @@ func Part1() int {
 			eitherIDs := strings.Split(eitherCondition, " ")
 			successiveConsumers := []Consumer{}
 			for _, eitherID := range eitherIDs {
-				successiveConsumers = append(successiveConsumers, rules[eitherID])
+				localEitherID := eitherID
+				successiveConsumers = append(
+					successiveConsumers,
+					DeferredConsumer(func() Consumer {
+						return rules[localEitherID]
+					}),
+				)
 			}
 			eitherConsumers = append(eitherConsumers, SuccessiveConsumer(successiveConsumers...))
 		}
