@@ -51,11 +51,9 @@ func DeferredConsumer(fn func() Consumer) Consumer {
 	}
 }
 
-func Part1() int {
-	groups := lib.SplitGroups(lib.ReadLines("input.txt"))
-
+func ParseConsumer(lines []string) Consumer {
 	rules := map[string]Consumer{}
-	for _, line := range groups[0] {
+	for _, line := range lines {
 		parts := strings.Split(line, ": ")
 		id := parts[0]
 		rule := parts[1]
@@ -84,9 +82,15 @@ func Part1() int {
 		rules[id] = EitherConsumer(eitherConsumers...)
 	}
 
+	return rules["0"]
+}
+
+func Part1() int {
+	groups := lib.SplitGroups(lib.ReadLines("input.txt"))
+
 	matches := 0
 	for _, message := range groups[1] {
-		if rules["0"](0, message) == len(message) {
+		if ParseConsumer(groups[0])(0, message) == len(message) {
 			matches++
 		}
 	}
@@ -95,6 +99,24 @@ func Part1() int {
 }
 
 func Part2() int {
-	lib.ReadLines("input.txt")
+	lines := lib.ReadLines("input.txt")
+	for i, line := range lines {
+		if line == "8: 42" {
+			lines[i] = "8: 42 | 42 8"
+		}
+		if line == "11: 42 31" {
+			lines[i] = "11: 42 31 | 42 11 31"
+		}
+	}
+
+	groups := lib.SplitGroups(lines)
+
+	matches := 0
+	for _, message := range groups[1] {
+		if ParseConsumer(groups[0])(0, message) == len(message) {
+			matches++
+		}
+	}
+
 	return -1
 }
