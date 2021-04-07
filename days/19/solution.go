@@ -1,6 +1,7 @@
 package solution
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
@@ -8,51 +9,67 @@ import (
 
 // Consumes n items in str starting at index i.
 // Returns 0 when nothing is consumed.
-type Consumer = func(i int, str string) (n int)
+type Consumer struct {
+	about   string
+	consume func(i int, str string) (n int)
+	depth   string
+}
 
-func ByteConsumer(match byte) Consumer {
-	return func(i int, str string) int {
+func (c *Consumer) Consume(i int, str string) int {
+	fmt.Println(c.depth + c.about)
+	c.depth += " "
+	n := c.consume(i, str)
+	c.depth = c.depth[1:]
+	return n
+}
+
+func ByteConsumer(match byte) *Consumer {
+	return &Consumer{"ByteConsumer", func(i int, str string) int {
 		if str[i] == match {
 			return 1
 		}
 		return 0
-	}
+	}, ""}
 }
 
-func SuccessiveConsumer(consumers ...Consumer) Consumer {
-	return func(i int, str string) int {
+func SuccessiveConsumer(consumers ...*Consumer) *Consumer {
+	return &Consumer{"SuccessiveConsumer", func(i int, str string) int {
 		nTotal := 0
 		for _, consumer := range consumers {
-			n := consumer(nTotal+i, str)
+			if i+nTotal >= len(str) {
+				return nTotal
+			}
+			n := consumer.Consume(nTotal+i, str)
 			if n == 0 {
 				return 0
 			}
 			nTotal += n
 		}
 		return nTotal
-	}
+	}, ""}
 }
 
-func EitherConsumer(consumers ...Consumer) Consumer {
-	return func(i int, str string) int {
+func EitherConsumer(consumers ...*Consumer) *Consumer {
+	return &Consumer{"EitherConsumer", func(i int, str string) int {
 		for _, consumer := range consumers {
-			n := consumer(i, str)
+			n := consumer.Consume(i, str)
 			if n != 0 {
 				return n
 			}
 		}
 		return 0
-	}
+	}, ""}
 }
 
-func DeferredConsumer(fn func() Consumer) Consumer {
-	return func(i int, str string) int {
-		return fn()(i, str)
-	}
+func DeferredConsumer(fn func() *Consumer) *Consumer {
+	return &Consumer{"DeferredConsumer", func(i int, str string) int {
+		r := fn().Consume(i, str)
+		return r
+	}, ""}
 }
 
-func ParseConsumer(lines []string) Consumer {
-	rules := map[string]Consumer{}
+func ParseConsumer(lines []string) *Consumer {
+	rules := map[string]*Consumer{}
 	for _, line := range lines {
 		parts := strings.Split(line, ": ")
 		id := parts[0]
@@ -64,22 +81,24 @@ func ParseConsumer(lines []string) Consumer {
 		}
 
 		eitherConditions := strings.Split(rule, " | ")
-		eitherConsumers := []Consumer{}
+		eitherConsumers := []*Consumer{}
 		for _, eitherCondition := range eitherConditions {
 			eitherIDs := strings.Split(eitherCondition, " ")
-			successiveConsumers := []Consumer{}
+			successiveConsumers := []*Consumer{}
 			for _, eitherID := range eitherIDs {
 				localEitherID := eitherID
 				successiveConsumers = append(
 					successiveConsumers,
-					DeferredConsumer(func() Consumer {
+					DeferredConsumer(func() *Consumer {
 						return rules[localEitherID]
 					}),
 				)
 			}
 			eitherConsumers = append(eitherConsumers, SuccessiveConsumer(successiveConsumers...))
 		}
-		rules[id] = EitherConsumer(eitherConsumers...)
+		k := EitherConsumer(eitherConsumers...)
+		k.about = id + " " + k.about
+		rules[id] = k
 	}
 
 	return rules["0"]
@@ -90,7 +109,7 @@ func Part1() int {
 
 	matches := 0
 	for _, message := range groups[1] {
-		if ParseConsumer(groups[0])(0, message) == len(message) {
+		if ParseConsumer(groups[0]).Consume(0, message) == len(message) {
 			matches++
 		}
 	}
@@ -113,10 +132,11 @@ func Part2() int {
 
 	matches := 0
 	for _, message := range groups[1] {
-		if ParseConsumer(groups[0])(0, message) == len(message) {
+		if ParseConsumer(groups[0]).Consume(0, message) == len(message) {
+			println(message)
 			matches++
 		}
 	}
 
-	return -1
+	return matches
 }
