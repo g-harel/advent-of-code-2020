@@ -78,3 +78,11 @@ func Combinations(positions int, options []int) [][]int {
 	}
 	return combinations
 }
+
+func Reverse(str string) string {
+	result := ""
+	for _, r := range str {
+		result = string(r) + result
+	}
+	return result
+}
