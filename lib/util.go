@@ -86,3 +86,47 @@ func Reverse(str string) string {
 	}
 	return result
 }
+
+func Common(a, b []string) []string {
+	m := map[string]bool{}
+	for _, v := range a {
+		m[v] = true
+	}
+	common := []string{}
+	for _, v := range b {
+		if m[v] {
+			common = append(common, v)
+		}
+	}
+	return common
+}
+
+func Remove(strs []string, mask ...string) []string {
+	out := []string{}
+	for _, s := range strs {
+		match := false
+		for _, m := range mask {
+			if s == m {
+				match = true
+				break
+			}
+		}
+		if !match {
+			out = append(out, s)
+		}
+	}
+	return out
+}
+
+func Unique(strs []string) []string {
+	seen := map[string]bool{}
+	out := []string{}
+	for _, str := range strs {
+		if seen[str] {
+			continue
+		}
+		seen[str] = true
+		out = append(out, str)
+	}
+	return out
+}

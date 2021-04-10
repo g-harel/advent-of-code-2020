@@ -1,7 +1,6 @@
 package solution
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
@@ -49,7 +48,6 @@ func Part1() int {
 
 	product := 1
 	for id, count := range matchedEdges {
-		fmt.Println(id, count)
 		if count == 2 {
 			product *= id
 		}
