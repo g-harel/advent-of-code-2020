@@ -1,6 +1,7 @@
 package solution
 
 import (
+	"sort"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
@@ -34,11 +35,6 @@ func Solve(foods []Food) []Food {
 				}
 			}
 
-			// Nothing to do when common lists are different lengths.
-			if len(commonAllergens) != len(commonIngredients) {
-				continue
-			}
-
 			// Nothing to do when nothing in common.
 			if len(commonAllergens) == 0 {
 				continue
@@ -53,15 +49,17 @@ func Solve(foods []Food) []Food {
 			}
 
 			// Found common subset, move to own food and remove from originals.
-			foods = append(foods, Food{
-				allergens:   commonAllergens,
-				ingredients: commonIngredients,
-			})
-			foods[i].allergens = lib.Remove(foods[i].allergens, commonAllergens...)
-			foods[i].ingredients = lib.Remove(foods[i].ingredients, commonIngredients...)
-			foods[j].allergens = lib.Remove(foods[j].allergens, commonAllergens...)
-			foods[j].ingredients = lib.Remove(foods[j].ingredients, commonIngredients...)
-			return Solve(foods)
+			if len(commonIngredients) >= len(commonAllergens) {
+				foods = append(foods, Food{
+					allergens:   commonAllergens,
+					ingredients: commonIngredients,
+				})
+				foods[i].allergens = lib.Remove(foods[i].allergens, commonAllergens...)
+				foods[i].ingredients = lib.Remove(foods[i].ingredients, commonIngredients...)
+				foods[j].allergens = lib.Remove(foods[j].allergens, commonAllergens...)
+				foods[j].ingredients = lib.Remove(foods[j].ingredients, commonIngredients...)
+				return Solve(foods)
+			}
 		}
 	}
 	return foods
@@ -91,23 +89,45 @@ func Part1() int {
 		}
 	}
 
-	mysteryIngredients := map[string]int{}
+	ingredientCounts := map[string]int{}
 	for _, food := range originalFoods {
 		for _, ingredient := range food.ingredients {
-			if _, ok := solvedIngredients[ingredient]; !ok {
-				mysteryIngredients[ingredient]++
+			ingredientCounts[ingredient]++
+		}
+	}
+
+	// Wipe unsafe ingredients from the count.
+	for _, food := range solvedFoods {
+		if len(food.allergens) > 0 {
+			for _, ingredient := range food.ingredients {
+				ingredientCounts[ingredient] = 0
 			}
 		}
 	}
 
-	mysteryCount := 0
-	for _, count := range mysteryIngredients {
-		mysteryCount += count
+	safeCount := 0
+	for _, count := range ingredientCounts {
+		safeCount += count
 	}
-	return mysteryCount
+	return safeCount
 }
 
-func Part2() int {
-	lib.ReadLines("input.txt")
-	return -1
+func Part2() string {
+	originalFoods := ParseFoods(lib.ReadLines("input.txt"))
+	solvedFoods := Solve(originalFoods)
+
+	dangerousFoods := []string{}
+	for _, food := range solvedFoods {
+		if len(food.allergens) == 1 && len(food.ingredients) == 1 {
+			dangerousFoods = append(dangerousFoods, food.allergens[0]+":"+food.ingredients[0])
+		}
+	}
+
+	sort.Strings(dangerousFoods)
+	for i, food := range dangerousFoods {
+		s := strings.Split(food, ":")
+		dangerousFoods[i] = s[1]
+	}
+
+	return strings.Join(dangerousFoods, ",")
 }
