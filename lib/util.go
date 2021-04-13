@@ -130,3 +130,12 @@ func Unique(strs []string) []string {
 	}
 	return out
 }
+
+func IndexOf(nums []int, n int) int {
+	for i, num := range nums {
+		if num == n {
+			return i
+		}
+	}
+	return -1
+}
