@@ -1,18 +1,27 @@
 package solution
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
-type LoopSlice struct {
+type WrapSlice struct {
 	nums []int
 }
 
-func (l *LoopSlice) Min() int {
-	min := l.nums[0]
-	for _, n := range l.nums {
+func (w *WrapSlice) Get(i int) int {
+	return w.nums[i%len(w.nums)]
+}
+
+func (w *WrapSlice) IndexOf(n int) int {
+	return lib.IndexOf(w.nums, n)
+}
+
+func (w *WrapSlice) Min() int {
+	min := w.nums[0]
+	for _, n := range w.nums {
 		if n < min {
 			min = n
 		}
@@ -20,9 +29,9 @@ func (l *LoopSlice) Min() int {
 	return min
 }
 
-func (l *LoopSlice) Max() int {
+func (w *WrapSlice) Max() int {
 	max := 0
-	for _, n := range l.nums {
+	for _, n := range w.nums {
 		if n > max {
 			max = n
 		}
@@ -30,40 +39,38 @@ func (l *LoopSlice) Max() int {
 	return max
 }
 
-func (l *LoopSlice) Loop(n int) []int {
+func (w *WrapSlice) Range(n int) []int {
 	ii := []int{}
 	i := 0
 	for len(ii) < n {
-		ii = append(ii, i%len(l.nums))
+		ii = append(ii, i%len(w.nums))
 		i++
 	}
 	return ii
 }
 
+func GetSmaller(w *WrapSlice, i int) int {
+	val := w.Get(i) - 1
+	if val == w.Min()-1 {
+		val = w.Max()
+	}
+	return w.IndexOf(val)
+}
+
 func Part1() int {
-	cups := lib.ParseInts(strings.Split(lib.ReadLines("input.txt")[0], ""))
-	max := len(cups)
+	cups := &WrapSlice{lib.ParseInts(strings.Split(lib.ReadLines("input.txt")[0], ""))}
 
-	for i := 0; i < 100; i++ {
-		current := cups[i]%max - 1
-		three := cups[i+1 : i+4] // TODO can go out of bounds.
-
-		target := current - 1
-		if target == 0 {
-			target = max
+	for _, i := range cups.Range(100) {
+		destinationIndex := GetSmaller(cups, i)
+		for destinationIndex > i && destinationIndex < i+3 {
+			destinationIndex = GetSmaller(cups, destinationIndex)
 		}
 
-		for lib.IndexOf(three, target) > 0 {
-			current--
-			if current == 0 {
-				current = max
-			}
-		}
-
-		// destination := lib.IndexOf(cups, target)
+		// TODO scoot over the three next nums.
+		fmt.Println(cups, cups.Get(i), cups.Get(destinationIndex))
 	}
 
-	return -1
+	return 0
 }
 
 func Part2() int {
