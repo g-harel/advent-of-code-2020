@@ -57,9 +57,17 @@ func ParseBinary(str string) int {
 }
 
 func ParseInts(strs []string) []int {
-	var nums []int
+	nums := []int{}
 	for _, str := range strs {
 		nums = append(nums, ParseInt(str))
 	}
 	return nums
+}
+
+func ParseStrings(nums []int) []string {
+	strs := []string{}
+	for _, num := range nums {
+		strs = append(strs, strconv.Itoa(num))
+	}
+	return strs
 }

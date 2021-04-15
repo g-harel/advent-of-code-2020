@@ -8,6 +8,6 @@ import (
 )
 
 func Test(t *testing.T) {
-	lib.AssertCorrect(t, solution.Part1(), -1)
+	lib.AssertCorrect(t, solution.Part1(), 45983627)
 	lib.AssertCorrect(t, solution.Part2(), -1)
 }

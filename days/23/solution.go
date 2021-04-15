@@ -1,49 +1,65 @@
 package solution
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/g-harel/advent-of-code-2020/lib"
 )
 
 func WrapGet(nums []int, i int) int {
-	return nums[i%len(nums)]
+	return nums[lib.Mod(i, len(nums))]
 }
 
-func WrapRange(nums []int, count int) []int {
-	ii := []int{}
+func WrapIter(nums []int, count int) []int {
+	indecies := []int{}
 	i := 0
-	for len(ii) < count {
-		ii = append(ii, i%len(nums))
+	for len(indecies) < count {
+		indecies = append(indecies, lib.Mod(i, len(nums)))
 		i++
 	}
-	return ii
+	return indecies
 }
 
-func GetSmaller(nums []int, i int) int {
-	val := nums[i] - 1
-	min, max := lib.MinMax(nums)
-	if val == min-1 {
-		val = max
+func WrapRange(nums []int, a, b int) []int {
+	r := []int{}
+	for i := a; i < b; i++ {
+		ii := lib.Mod(i, len(nums))
+		r = append(r, nums[ii])
 	}
-	return lib.IndexOf(nums, val)
+	return r
 }
 
 func Part1() int {
 	cups := lib.ParseInts(strings.Split(lib.ReadLines("input.txt")[0], ""))
 
-	for _, i := range WrapRange(cups, 100) {
-		destinationIndex := GetSmaller(cups, i)
-		for destinationIndex > i && destinationIndex < i+3 {
-			destinationIndex = GetSmaller(cups, destinationIndex)
+	for _, i := range WrapIter(cups, 100) {
+		min, max := lib.MinMax(cups)
+		rotated := lib.Rotate(cups, -i)[4:]
+
+		destination := cups[i]
+		destinationIndex := i
+		for {
+			destination--
+			if destination < min {
+				destination = max
+			}
+			destinationIndex = lib.IndexOf(rotated, destination)
+			if destinationIndex >= 0 {
+				break
+			}
 		}
 
-		// TODO scoot over the three next nums.
-		fmt.Println(cups, WrapGet(cups, i), WrapGet(cups, destinationIndex))
+		newCups := lib.Concat(
+			[]int{cups[i]},
+			rotated[:destinationIndex+1],
+			WrapRange(cups, i+1, i+4),
+			rotated[destinationIndex+1:])
+
+		cups = lib.Rotate(newCups, i)
 	}
 
-	return 0
+	// Format answer.
+	return lib.ParseInt(strings.Join(lib.ParseStrings(lib.Rotate(cups, -lib.IndexOf(cups, 1))[1:]), ""))
 }
 
 func Part2() int {

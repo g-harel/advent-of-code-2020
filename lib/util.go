@@ -157,7 +157,19 @@ func MinMax(nums []int) (int, int) {
 func Rotate(nums []int, r int) []int {
 	rotated := make([]int, len(nums))
 	for i, n := range nums {
-		rotated[(i+r)%len(nums)] = n
+		rotated[Mod(i+r, len(nums))] = n
 	}
 	return rotated
+}
+
+func Mod(n, m int) int {
+	return (n%m + m) % m
+}
+
+func Concat(n ...[]int) []int {
+	res := []int{}
+	for _, nums := range n {
+		res = append(res, nums...)
+	}
+	return res
 }
