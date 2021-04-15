@@ -139,3 +139,25 @@ func IndexOf(nums []int, n int) int {
 	}
 	return -1
 }
+
+func MinMax(nums []int) (int, int) {
+	min := nums[0]
+	max := 0
+	for _, n := range nums {
+		if n < min {
+			min = n
+		}
+		if n > max {
+			max = n
+		}
+	}
+	return min, max
+}
+
+func Rotate(nums []int, r int) []int {
+	rotated := make([]int, len(nums))
+	for i, n := range nums {
+		rotated[(i+r)%len(nums)] = n
+	}
+	return rotated
+}
